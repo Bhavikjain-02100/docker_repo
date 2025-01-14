@@ -18,16 +18,24 @@ phases:
     commands:
       - echo Building Docker image...
       - docker build -t my-docker-image .
-      - docker tag my-docker-image:latest 940482407187.dkr.ecr.eu-north-1.amazonaws.com/my-docker-repo:latest
+      - docker tag my-docker-image:latest 940482407187.dkr.ecr.eu-north-1.amazonaws.com/docker_repo:latest
 
   post_build:
     commands:
       - echo Pushing Docker image to ECR...
-      - docker push 940482407187.dkr.ecr.eu-north-1.amazonaws.com/my-docker-repo:latest
-      - echo "Image URI: 940482407187.dkr.ecr.eu-north-1.amazonaws.com/my-docker-repo:latest"
+      - docker push 940482407187.dkr.ecr.eu-north-1.amazonaws.com/docker_repo:latest
+      - echo "Image URI: 940482407187.dkr.ecr.eu-north-1.amazonaws.com/docker_repo:latest"
+      # Create the imagedefinition.json for ECS
+      - |
+        echo '[
+          {
+          "name": "Django-project-1", 
+          "imageUri": "940482407187.dkr.ecr.eu-north-1.amazonaws.com/docker_repo:latest"
+          }
+        ]' > imagedefinitions.json
 
 artifacts:
   files:
-    - '**/*'
+    - imagedefinitions.json  # Include the imagedefinition.json file
   discard-paths: yes
   base-directory: build-output
