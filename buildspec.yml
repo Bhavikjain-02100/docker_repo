@@ -24,8 +24,6 @@ phases:
     commands:
       - echo Pushing Docker image to ECR...
       - docker push 940482407187.dkr.ecr.eu-north-1.amazonaws.com/docker_repo:latest
-      - echo " 
-        Image URI: 940482407187.dkr.ecr.eu-north-1.amazonaws.com/docker_repo:latest"
       # Create the imagedefinition.json for ECS
       - |
         echo '[
